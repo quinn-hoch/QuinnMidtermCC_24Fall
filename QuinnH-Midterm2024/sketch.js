@@ -21,9 +21,7 @@ let spikeLength = 50;
 let numSpikes = 16;
 let redup = 255; 
 
-let cracksuper = []; 
-let thick = 10; 
-let click = 0; 
+let cracks = []; 
 
 function setup() {
 
@@ -124,38 +122,31 @@ if(frameCount > 1400){
 }
 //begin scene 3
 if(frameCount > 2000){
-  // let crack1a = random(0, height); //0
-  // let crack1b = random(1, height); 
-  // let crack1x = random(1, width);
-  // cracksuper.push(crack1a); 
-  // cracksuper.push(crack1b); 
-  // cracksuper.push(crack1x); 
-  //line(0, cracksuper[0], cracksuper[1], cracksuper[2]);
-  //mousePressed()
-  //outermost cracks:
-  strokeWeight(2); //thick - click
-  stroke(0);
-  //first
-  line(0, cracksuper[0], cracksuper[1], cracksuper[2]); //left
-  line(width, cracksuper[3], cracksuper[4], cracksuper[5]); //right
-  line(cracksuper[6], 0, cracksuper[7], cracksuper[8]); //top
-  line(cracksuper[9], height, cracksuper[10], cracksuper[11]); //bottom
-  }//second
-  if(frameCount > 1950){
-  //strokeWeight(2);
-  line(cracksuper[1], cracksuper[2], cracksuper[12], cracksuper[13]);
-  line(cracksuper[1], cracksuper[2], cracksuper[14], cracksuper[15]);
-
-  line(cracksuper[4], cracksuper[5], cracksuper[16], cracksuper[17]);
-  line(cracksuper[4], cracksuper[5], cracksuper[18], cracksuper[19]);
-
-  line(cracksuper[7], cracksuper[8], cracksuper[20], cracksuper[21]);
-  line(cracksuper[7], cracksuper[8], cracksuper[22], cracksuper[23]);
-
-  line(cracksuper[10], cracksuper[11], cracksuper[24], cracksuper[25]);
-
-  //crack();
-}
+   for (let i = 0; i < cracks.length; i++) {
+    stroke(82, 62, 42);
+    strokeWeight(2);
+    noFill();
+    //left line
+    beginShape();
+    vertex(0, cracks[i].lefty);
+    vertex(cracks[i].leftx2, cracks[i].lefty3);
+    vertex(cracks[i].leftx3, cracks[i].lefty4);
+    vertex(cracks[i].leftx, cracks[i].lefty2);
+    //line(0, cracks[i].lefty, cracks[i].leftx, cracks[i].lefty2);
+    endShape();
+    //right line
+    beginShape();
+    vertex(width, cracks[i].righty);
+    vertex(cracks[i].rightx3, cracks[i].righty2);
+    vertex(cracks[i].rightx2,cracks[i].righty3);
+    vertex(cracks[i].rightx,cracks[i].righty4);
+    //(width, cracks[i].righty, cracks[i].rightx, cracks[i].righty2);
+    endShape();
+    //top line
+    line(cracks[i].topx, 0, cracks[i].topy, cracks[i].topx2);
+    //bottom line
+    line(cracks[i].bottomx, height, cracks[i].bottomy, cracks[i].bottomx2);
+  }}
 //extra testers: 
   //   for(let q = 100; q < 900; q += 50){
   //   grass(random(100, 900), random(100, 900));
@@ -179,6 +170,7 @@ if(frameCount > 2000){
 // }
   //}
 //opacity needs to slowly develop then add more cracks?
+
 }
 
 class Wave{
@@ -205,84 +197,37 @@ function grass(bladex, bladey){
   line(bladex + 30, bladey, bladex + 20, bladey + 20); 
 }
 
-function mousePressed(){
-  if(click = 0){
-  //left crack
-  let crack1ay = random(0, height); 
-  let crack1x = random(1, width/4); 
-  let crack1by = random(1, height);
-  cracksuper.push(crack1ay); //[0]
-  cracksuper.push(crack1x); //[1]
-  cracksuper.push(crack1by); //[2]
-  //right crack
-  let crack2ay = random(0, height);
-  let crack2x = random((width - width/4), width); 
-  let crack2by = random(1, height);
-  cracksuper.push(crack2ay); //[3]
-  cracksuper.push(crack2x); //[4]
-  cracksuper.push(crack2by); //[5]
-  //top crack
-  let crack1ax = random(0, width); 
-  let crack1y = random(1, height/4); 
-  let crack1bx = random(1, width);
-  cracksuper.push(crack1ax); //[6]
-  cracksuper.push(crack1bx); //[7]
-  cracksuper.push(crack1y); //[8]
-  //bottom crack
-  let crack2ax = random(0, width); 
-  let crack2y = random((height - height/4), height); 
-  let crack2bx = random(1, width);
-  cracksuper.push(crack2ax); //[9]
-  cracksuper.push(crack2bx); //[10]
-  cracksuper.push(crack2y); //[11]
-}
-if(click = 2){
-  //left crack
-  let crack3ay = random(0, height); 
-  let crack3ax = random(1, width/3); 
-  cracksuper.push(crack3ay); //[12]
-  cracksuper.push(crack3ax); //[13]
+function mousePressed() {
+  let newCrack = {
+    //left side crack
+    lefty: random(0, height),
+    leftx: random(1, width/2),
+    lefty2: random(1, height), 
+    lefty3: random(1, height),
+    lefty4: random(1, height),
+    leftx2: width/(random(3,6)),
+    leftx3: width/(random(3,6)) + random(100, 200),
 
-  let crack3by = random(0, height); 
-  let crack3bx = random(1, width/3); 
-  cracksuper.push(crack3by); //[14]
-  cracksuper.push(crack3bx); //[15]
+    //right side crack
+    righty: random(0, height),
+    rightx: random(width/2, width),
+    righty2: random(1, height),
+    righty3: random(1, height),
+    righty4: random(1, height),
+    rightx2: (width/2 - (width/(random(3,6)))),
+    rightx3: width - ((width/(random(3,6))) + random(100, 200)),
+    
+    //top crack
+    topx: random(0, width), 
+    topy: random(1, height/2), 
+    topx2: random(1, width),
 
-  //right crack
-  let crack4ay = random(0, height); 
-  let crack4ax = random((width - width/3), width); 
-  cracksuper.push(crack4ay); //[16]
-  cracksuper.push(crack4ax); //[17]
-
-  let crack4by = random(0, height); 
-  let crack4bx = random((width - width/3), width); 
-  cracksuper.push(crack4by); //[18]
-  cracksuper.push(crack4bx); //[19]
-
-  //top crack
-  let crack5ax = random(0, width); 
-  let crack5ay = random(1, height/3); 
-  cracksuper.push(crack5ax); //[20]
-  cracksuper.push(crack5ay); //[21]
-
-  let crack5bx = random(0, width); 
-  let crack5by = random(1, height/3); 
-  cracksuper.push(crack5bx); //[22]
-  cracksuper.push(crack5by); //[23]
-
-  //bottom crack
-  let crack6ax = random(0, width);
-  let crack6ay = random((height - height/3), height); 
-  cracksuper.push(crack6ax); //[24]
-  cracksuper.push(crack6ay); //[25]
-
-  let crack6bx = random(0, width);
-  let crack6by = random((height - height/3), height); 
-  cracksuper.push(crack6bx); //[24]
-  cracksuper.push(crack6by); //[25]
-}
-  click += 1;
-  //crack(mouseX, mouseY);
+    //bottom crack
+    bottomx: random(0, width), 
+    bottomy: random(height/2, height),
+    bottomx2: random(1, width),
+  }
+  cracks.push(newCrack);
 }
 
 // function crack(){
