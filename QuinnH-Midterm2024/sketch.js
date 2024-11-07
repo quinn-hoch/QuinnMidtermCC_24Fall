@@ -11,6 +11,7 @@ let water;
 let r = 30;
 let b = 196; 
 let g = 40; 
+let op = 300; 
 
 let angle = 0; 
 let posX; 
@@ -102,17 +103,18 @@ if(frameCount > 1400){
   background(r, b, g);
   if(r < 218){
   
-    grass(100, 100); //1
-    grass(200, 80); //2
-    grass(800, 600); //3
-    grass(720, 530); //4
-    grass(500, 200); //5
-    grass(400, 370); //6
-    grass(300, 700); //7
-    grass(230, 500); //8 
-    grass(607, 400); //9
-    grass(470, 800); //10
-    r += 1;
+    grass(100, 100, op); //1
+    grass(200, 80, op); //2
+    grass(800, 600, op); //3
+    grass(720, 530, op); //4
+    grass(500, 200, op); //5
+    grass(400, 370, op); //6
+    grass(300, 700, op); //7
+    grass(230, 500, op); //8 
+    grass(607, 400, op); //9
+    grass(470, 800, op); //10
+    r += .3;
+    op -= 1
   }
   if(r == 218 && g < 100){
     //b += 0.5;
@@ -189,8 +191,8 @@ class Wave{
   }
 }
 
-function grass(bladex, bladey){
-  stroke(46, 122, 45); 
+function grass(bladex, bladey, op){
+  stroke(46, 122, 45, op); 
   strokeWeight(4);
   line(bladex, bladey, bladex + 10, bladey + 20);
   line(bladex + 15, bladey - 5, bladex + 15, bladey + 15); 
@@ -216,7 +218,6 @@ function mousePressed() {
     righty4: random(1, height),
     rightx2: (width/2 - (width/(random(3,6)))),
     rightx3: width - ((width/(random(3,6))) + random(100, 200)),
-    
     //top crack
     topx: random(0, width), 
     topy: random(1, height/2), 
